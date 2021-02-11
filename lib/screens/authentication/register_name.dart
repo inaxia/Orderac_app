@@ -4,19 +4,23 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:orderac/services/auth_service.dart';
 import 'package:orderac/shared/snack_bar.dart';
 
-class SignIn extends StatefulWidget {
+class RegisterName extends StatefulWidget {
+  final email;
+  final password;
+
+  RegisterName(this.email, this.password);
+
   @override
-  _SignInState createState() => _SignInState();
+  _RegisterNameState createState() => _RegisterNameState();
 }
 
-class _SignInState extends State<SignIn> {
+class _RegisterNameState extends State<RegisterName> {
   final AuthService _auth = AuthService();
   final _formKey = GlobalKey<FormState>();
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
-  String email = '';
-  String password = '';
-  String error = '';
+  String name = '';
+  String error = 'Something went wrong';
   bool loading = false;
 
   void _startLoading() {
@@ -28,12 +32,6 @@ class _SignInState extends State<SignIn> {
   void _stopLoading() {
     setState(() {
       loading = false;
-    });
-  }
-
-  void _setEmail(value) {
-    setState(() {
-      email = value;
     });
   }
 
@@ -77,7 +75,7 @@ class _SignInState extends State<SignIn> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          'Login',
+                          'Register',
                           style: GoogleFonts.comfortaa(
                             fontSize: 50.0,
                           ),
@@ -111,65 +109,31 @@ class _SignInState extends State<SignIn> {
                           focusColor: Colors.black,
                           counterText: '',
                           border: InputBorder.none,
-                          hintText: 'Email',
+                          hintText: 'Name',
                           hintStyle: TextStyle(fontSize: 18.0),
                         ),
                         validator: (value) {
                           if (value == '') {
-                            return 'Enter an email';
+                            return 'Enter your name';
                           } else {
                             return null;
                           }
                         },
                         onChanged: (value) {
-                          _setEmail(value);
+                          name = value;
                         },
                       ),
                     ),
                     SizedBox(height: 20.0),
-                    Container(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 10.0,
-                        vertical: 5.0,
-                      ),
-                      decoration: BoxDecoration(
-                          border: Border.all(
-                            color: Colors.black,
-                            style: BorderStyle.solid,
-                            width: 2.0,
-                          ),
-                          borderRadius: BorderRadius.all(Radius.circular(5.0))),
-                      child: TextFormField(
-                        cursorWidth: 1.0,
-                        decoration: InputDecoration(
-                          hoverColor: Colors.black,
-                          fillColor: Colors.black,
-                          focusColor: Colors.black,
-                          counterText: '',
-                          border: InputBorder.none,
-                          hintText: 'Password',
-                          hintStyle: TextStyle(fontSize: 18.0),
-                        ),
-                        validator: (value) {
-                          if (value.length < 6) {
-                            return 'Password must be atleast 6 characters';
-                          } else {
-                            return null;
-                          }
-                        },
-                        obscureText: true,
-                        onChanged: (value) {
-                          password = value;
-                        },
-                      ),
-                    ),
-                    SizedBox(height: 20.0),
+                    Text(
+                        'By registering, you agree to Orderac’s\nTerms of Service and Privacy Policy.'),
+                    SizedBox(height: 10.0),
                     FlatButton(
                       minWidth: double.maxFinite,
                       color: Colors.black,
                       height: 60.0,
                       child: Text(
-                        'LOGIN',
+                        'REGISTER',
                         style: TextStyle(
                           fontSize: 18.0,
                           fontWeight: FontWeight.w500,
@@ -180,13 +144,14 @@ class _SignInState extends State<SignIn> {
                           FocusScope.of(context).unfocus();
                           _startLoading();
                           dynamic result = await _auth
-                              .signInWithEmailAndPasswordWithFirebase(
-                            email,
-                            password,
+                              .registerWithEmailAndPasswordWithFirebase(
+                            widget.email,
+                            widget.password,
                           );
                           error = result.toString();
                           _stopLoading();
                           if (error == "Instance of 'AboutUser'") {
+                            Navigator.of(context).pop();
                             Navigator.of(context).pop();
                           } else {
                             _scaffoldKey.currentState.showSnackBar(

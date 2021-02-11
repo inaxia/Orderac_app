@@ -23,9 +23,10 @@ class _SplashScreenState extends State<SplashScreen> {
     final body = Container(
       decoration: BoxDecoration(
         image: DecorationImage(
-            image: AssetImage('assets/initials/splash.jpg'),
-            fit: BoxFit.cover,
-            colorFilter: ColorFilter.mode(Colors.black45, BlendMode.darken)),
+          image: AssetImage('assets/initials/splash.jpg'),
+          fit: BoxFit.cover,
+          colorFilter: ColorFilter.mode(Colors.black45, BlendMode.darken),
+        ),
       ),
       child: Center(
         child: Column(
@@ -39,9 +40,9 @@ class _SplashScreenState extends State<SplashScreen> {
               ),
             ),
             Text(
-              'Orderac', 
+              'Orderac',
               style: TextStyle(
-                fontSize: 24.0, 
+                fontSize: 24.0,
                 fontWeight: FontWeight.w500,
                 color: Colors.white,
               ),

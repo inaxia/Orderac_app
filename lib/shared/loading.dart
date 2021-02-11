@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:orderac/custom/custom_banners.dart';
 import 'package:orderac/custom/custom_colors.dart';
 
 class Loading extends StatelessWidget {

@@ -1,164 +1,181 @@
 import 'package:flutter/material.dart';
-import 'package:orderac/custom/custom_colors.dart';
-import 'package:orderac/services/auth_service.dart';
-import 'package:orderac/shared/loading.dart';
-import 'package:orderac/shared/snack_bar.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:orderac/screens/authentication/register_name.dart';
+import 'package:orderac/shared/page_transitions/slide_right_route.dart';
 
 class Register extends StatefulWidget {
-  final Function toogleView;
-
-  Register({this.toogleView});
-
   @override
   _RegisterState createState() => _RegisterState();
 }
 
 class _RegisterState extends State<Register> {
-  final AuthService _auth = AuthService();
+  // final AuthService _auth = AuthService();
   final _formKey = GlobalKey<FormState>();
 
   String email = '';
   String password = '';
-  String error = 'No error';
   bool loading = false;
+
+  // void _startLoading() {
+  //   setState(() {
+  //     loading = true;
+  //   });
+  // }
+
+  // void _stopLoading(result) {
+  //   setState(() {
+  //     loading = false;
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
-    final appBar = AppBar(
-      backgroundColor: customDarkBlack,
-      title: Text(
-        'Register to orderac',
-        style: TextStyle(
-          color: Colors.white,
-        ),
-      ),
-      elevation: 0.0,
-      actions: [
-        FlatButton.icon(
-          color: Colors.transparent,
-          label: Text(
-            'Sign in',
-            style: TextStyle(color: Colors.white),
-          ),
-          icon: Icon(
-            Icons.exit_to_app,
-            color: Colors.white,
-          ),
-          onPressed: () {
-            widget.toogleView();
-          },
-        )
-      ],
-    );
-
     final body = Container(
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          image: AssetImage('assets/initials/register.jpg'),
-          fit: BoxFit.cover,
-          colorFilter: ColorFilter.mode(Colors.black45, BlendMode.darken),
-        ),
-      ),
-      padding: EdgeInsets.symmetric(horizontal: 50.0, vertical: 20.0),
+      padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 20.0),
       child: Form(
         key: _formKey,
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              'Register',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 18.0,
+            Expanded(
+              flex: 1,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  IconButton(
+                    icon: Icon(
+                      Icons.arrow_back,
+                      color: Colors.black,
+                    ),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
               ),
             ),
-            SizedBox(height: 15.0),
-            TextFormField(
-              style: TextStyle(color: Colors.white),
-              cursorColor: Colors.white,
-              decoration: InputDecoration(
-                hoverColor: Colors.white,
-                fillColor: Colors.white,
-                focusColor: Colors.white,
-                counterText: '',
-                border: InputBorder.none,
-                hintText: 'xyz@gmail.com',
-                hintStyle: TextStyle(fontSize: 18.0, color: Colors.white54),
-                labelText: "Enter email",
-                labelStyle: TextStyle(fontSize: 18.0, color: Colors.white),
-                focusedBorder:OutlineInputBorder(
-                  borderSide: const BorderSide(color: Colors.white, width: 2.0),
-                  borderRadius: BorderRadius.circular(6.0),
+            Expanded(
+              flex: 9,
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 10.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(height: 30.0),
+                    Text(
+                      'Register',
+                      style: GoogleFonts.comfortaa(
+                        fontSize: 50.0,
+                      ),
+                    ),
+                    SizedBox(height: 30.0),
+                    Container(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 10.0,
+                        vertical: 5.0,
+                      ),
+                      decoration: BoxDecoration(
+                          border: Border.all(
+                            color: Colors.black,
+                            style: BorderStyle.solid,
+                            width: 2.0,
+                          ),
+                          borderRadius: BorderRadius.all(Radius.circular(5.0))),
+                      child: TextFormField(
+                        cursorWidth: 1.0,
+                        decoration: InputDecoration(
+                          hoverColor: Colors.black,
+                          fillColor: Colors.black,
+                          focusColor: Colors.black,
+                          counterText: '',
+                          border: InputBorder.none,
+                          hintText: 'Email',
+                          hintStyle: TextStyle(fontSize: 18.0),
+                        ),
+                        validator: (value) {
+                          if (value == '') {
+                            return 'Enter an email';
+                          } else {
+                            return null;
+                          }
+                        },
+                        onChanged: (value) {
+                          email = value;
+                        },
+                      ),
+                    ),
+                    SizedBox(height: 20.0),
+                    Container(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 10.0,
+                        vertical: 5.0,
+                      ),
+                      decoration: BoxDecoration(
+                          border: Border.all(
+                            color: Colors.black,
+                            style: BorderStyle.solid,
+                            width: 2.0,
+                          ),
+                          borderRadius: BorderRadius.all(Radius.circular(5.0))),
+                      child: TextFormField(
+                        cursorWidth: 1.0,
+                        decoration: InputDecoration(
+                          hoverColor: Colors.black,
+                          fillColor: Colors.black,
+                          focusColor: Colors.black,
+                          counterText: '',
+                          border: InputBorder.none,
+                          hintText: 'Password',
+                          hintStyle: TextStyle(fontSize: 18.0),
+                        ),
+                        validator: (value) {
+                          if (value.length < 6) {
+                            return 'Password must be atleast 6 characters';
+                          } else {
+                            return null;
+                          }
+                        },
+                        obscureText: true,
+                        onChanged: (value) {
+                          password = value;
+                        },
+                      ),
+                    ),
+                    SizedBox(height: 20.0),
+                    FlatButton(
+                      minWidth: double.maxFinite,
+                      color: Colors.black,
+                      height: 60.0,
+                      child: Text(
+                        'NEXT',
+                        style: TextStyle(
+                          fontSize: 18.0,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      // onPressed: () async {
+                      //   if (_formKey.currentState.validate()) {
+                      //     _startLoading();
+                      //     dynamic result = await _auth
+                      //         .registerWithEmailAndPasswordWithFirebase(
+                      //             email, password);
+                      //     _stopLoading(result);
+                      //   }
+                      // },
+                      onPressed: () {
+                        if (_formKey.currentState.validate()) {
+                          FocusScope.of(context).unfocus();
+                          Navigator.push(
+                            context,
+                            SlideLeftRoute(page: RegisterName(email, password)),
+                          );
+                        }
+                      },
+                    ),
+                  ],
                 ),
-              ),
-              validator: (value) {
-                if (value == '') {
-                  return 'Enter an email';
-                } else {
-                  return null;
-                }
-              },
-              onChanged: (value) {
-                setState(() {
-                  email = value;
-                });
-              },
-            ),
-            SizedBox(height: 8.0),
-            TextFormField(
-              style: TextStyle(color: Colors.white),
-              cursorColor: Colors.white,
-              decoration: InputDecoration(
-                hoverColor: Colors.white,
-                fillColor: Colors.white,
-                focusColor: Colors.white,
-                counterText: '',
-                border: InputBorder.none,
-                hintText: '123456',
-                hintStyle: TextStyle(fontSize: 18.0, color: Colors.white54),
-                labelText: "Enter password",
-                labelStyle: TextStyle(fontSize: 18.0, color: Colors.white),
-                focusedBorder:OutlineInputBorder(
-                  borderSide: const BorderSide(color: Colors.white, width: 2.0),
-                  borderRadius: BorderRadius.circular(6.0),
-                ),
-              ),
-              validator: (value) {
-                if (value.length < 6) {
-                  return 'Password must be atleast 6 characters';
-                } else {
-                  return null;
-                }
-              },
-              obscureText: true,
-              onChanged: (value) {
-                password = value;
-              },
-            ),
-            SizedBox(height: 15.0),
-            RaisedButton(
-              child: Text('Register'),
-              onPressed: () async {
-                if (_formKey.currentState.validate()) {
-                  setState(() {
-                    loading = true;
-                  });
-                  dynamic result = await _auth
-                      .registerWithEmailAndPasswordWithFirebase(email, password);
-                  setState(() {
-                    loading = false;
-                    error = result;
-                  });
-                }
-              },
-            ),
-            SizedBox(height: 15.0),
-            Text(
-              error,
-              style: TextStyle(
-                color: Colors.red,
-                fontSize: 18.0,  
               ),
             )
           ],
@@ -166,12 +183,9 @@ class _RegisterState extends State<Register> {
       ),
     );
 
-    return (loading)
-      ? Loading()
-      : Scaffold(
-          backgroundColor: customDarkBlack,
-          appBar: appBar,
-          body: body,
-        );
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      body: body,
+    );
   }
 }

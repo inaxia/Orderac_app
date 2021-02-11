@@ -1,10 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:orderac/custom/custom_banners.dart';
-import 'package:orderac/custom/custom_colors.dart';
-import 'package:orderac/information/about_user.dart';
 import 'package:orderac/information/food_courts.dart';
 import 'package:orderac/information/global_variables.dart';
+import 'package:orderac/screens/home/location_screen.dart';
 import 'package:orderac/screens/home/menu.dart';
 import 'package:orderac/services/auth_service.dart';
 import 'package:orderac/services/database_service.dart';
@@ -17,7 +16,6 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-
   @override
   void initState() {
     final user = firebaseAuth.currentUser;
@@ -26,7 +24,6 @@ class _HomeState extends State<Home> {
   }
 
   final AuthService _auth = AuthService();
-
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
   @override
@@ -38,23 +35,27 @@ class _HomeState extends State<Home> {
           floating: true,
           pinned: false,
           elevation: 1.0,
-          backgroundColor: customDarkBlack,
           title: Text('Food Courts'),
           actions: [
+            IconButton(
+              icon: Icon(Icons.location_on_outlined),
+              onPressed: () {
+                Navigator.push(context, SlideLeftRoute(page: LocationScreen()));
+              },
+            ),
+            SizedBox(width: 8.0),
             FlatButton.icon(
               onPressed: () async {
                 await _auth.signOutWithFirebase();
               },
-              icon: Icon(Icons.exit_to_app_outlined, color: Colors.white),
-              label: Text(
-                'Sign out',
-                style: TextStyle(color: Colors.white),
-              ),
+              icon: Icon(Icons.exit_to_app_outlined),
+              label: Text('Sign out'),
             ),
           ],
         ),
         SliverGrid.count(
           crossAxisCount: 2,
+          childAspectRatio: 2 / 2.5,
           mainAxisSpacing: 10.0,
           crossAxisSpacing: 5.0,
           children: List.generate(8, (index) {
@@ -62,51 +63,42 @@ class _HomeState extends State<Home> {
               onTap: () {
                 Navigator.push(
                   context,
-                  SlideLeftRoute(page: Menu(foodCourt: foodCourts[index][2], foodItems: foodCourts[index][1])),
+                  SlideLeftRoute(
+                    page: Menu(
+                      foodCourt: foodCourts[index][2],
+                      foodItems: foodCourts[index][1],
+                    ),
+                  ),
                 );
               },
               child: Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                  color: customLightBlack,
                 ),
                 child: Column(
                   children: [
                     Expanded(
-                      flex: 8,
+                      flex: 4,
                       child: Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                          color: customLightBlack,
                           image: DecorationImage(
                             image: AssetImage(customBanners[index]),
                             fit: BoxFit.cover,
                           ),
                         ),
-                        // child: Padding(
-                        //   padding: EdgeInsets.all(8.0),
-                        //   child: Text(
-                        //     foodCourts[index][0],
-                        //     maxLines: 2,
-                        //     style: TextStyle(
-                        //       fontWeight: FontWeight.w500,
-                        //       fontSize: 25.0,
-                        //       color: Colors.black,
-                        //     ),
-                        //   ),
-                        // ),
                       ),
                     ),
                     Expanded(
-                      flex: 2,
+                      flex: 1,
                       child: Center(
                         child: Text(
                           foodCourts[index][0],
                           maxLines: 2,
                           style: TextStyle(
                             fontWeight: FontWeight.w500,
-                            fontSize: 18.0,
-                            color: Colors.white,
+                            fontSize: 22.0,
+                            // color: Colors.white,
                           ),
                         ),
                       ),
@@ -121,24 +113,22 @@ class _HomeState extends State<Home> {
     );
 
     final floatingActionButton = FloatingActionButton(
-      backgroundColor: customPink,
       child: Icon(Icons.qr_code),
       onPressed: () {
         showDialog(
           context: context,
           child: AlertDialog(
-            backgroundColor: customDarkBlack,
             title: Text(
               'Your Order ID',
               style: TextStyle(
-                color: Colors.white,
-              ),
+                  // color: Colors.white,
+                  ),
             ),
             content: Text(
               globalOrderID.toString(),
               style: TextStyle(
-                color: Colors.white,
-              ),
+                  // color: Colors.white,
+                  ),
             ),
           ),
         );
@@ -148,7 +138,7 @@ class _HomeState extends State<Home> {
     return StreamProvider.value(
       value: DatabaseService().items,
       child: Scaffold(
-        backgroundColor: customDarkBlack,
+        // backgroundColor: customDarkBlack,
         body: body,
         floatingActionButton: floatingActionButton,
       ),
