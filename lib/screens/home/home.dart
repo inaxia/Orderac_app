@@ -117,20 +117,16 @@ class _HomeState extends State<Home> {
       onPressed: () {
         showDialog(
           context: context,
-          child: AlertDialog(
-            title: Text(
-              'Your Order ID',
-              style: TextStyle(
-                  // color: Colors.white,
-                  ),
-            ),
-            content: Text(
-              globalOrderID.toString(),
-              style: TextStyle(
-                  // color: Colors.white,
-                  ),
-            ),
-          ),
+          builder: (context) {
+            return AlertDialog(
+              title: Text(
+                'Your Order ID',
+              ),
+              content: Text(
+                globalOrderID.toString(),
+              ),
+            );
+          },
         );
       },
     );

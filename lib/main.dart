@@ -31,20 +31,22 @@ class _MyAppState extends State<MyApp> {
         debugShowCheckedModeBanner: false,
         title: 'Orderac',
         theme: ThemeData(
-          cursorColor: Colors.black,
-          textSelectionHandleColor: Colors.black,
+          textSelectionTheme: TextSelectionThemeData(
+            cursorColor: Colors.black,
+            selectionColor: Colors.black,
+            selectionHandleColor: Colors.black,
+          ),
           primaryColor: Colors.white,
           accentColor: customRed,
           scaffoldBackgroundColor: Colors.white,
           buttonTheme: ButtonThemeData(
-            textTheme: ButtonTextTheme.primary,             
+            textTheme: ButtonTextTheme.primary,
           ),
           iconTheme: IconThemeData(
             color: customCream,
           ),
-          floatingActionButtonTheme: FloatingActionButtonThemeData(
-            backgroundColor: customRed
-          ),
+          floatingActionButtonTheme:
+              FloatingActionButtonThemeData(backgroundColor: customRed),
           textTheme: TextTheme(
             bodyText1: TextStyle(color: Colors.black),
             bodyText2: TextStyle(color: Colors.black),
